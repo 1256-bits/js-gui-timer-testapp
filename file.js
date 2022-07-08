@@ -1,17 +1,23 @@
 function setTimer(sec, flag = false) {
     if (sec <= 0)
         return;
+    if (!paused)
+        progress.style.flexBasis = "100%"
     button.innerText = "Stop";
     const point = Math.floor(Date.now() / 1000 + sec);
     intID = setInterval(() => {
-        const val = point - Math.floor(Date.now() / 1000);
+        const currentTime = Math.floor(Date.now() / 1000);
+        const val = point - currentTime;
         const hours = numProcess(Math.floor((val / 60 / 60) % 60));
         const mins = numProcess(Math.floor((val / 60) % 60));
         const secs = numProcess(Math.floor(val % 60));
+        progress.style.flexBasis = `${val / sec * 100}%`
         if (val <= 0) {
             console.log(`${hours}:${mins}:${secs}`);
             updatePage(hours, mins, secs);
             clearInterval(intID);
+            intID = '';
+            button.innerText = "Start";
         }
         else {
             updatePage(hours, mins, secs);
@@ -40,12 +46,13 @@ function startTimer(hh, mm, ss) {
 }
 
 function toggleTimer() {
+    paused = !paused;
     if (!intID)
         startTimer(hh, mm, ss);
     else {
         clearInterval(intID);
         intID = '';
-        button.innerText="Start";
+        button.innerText = "Start";
     }
 }
 
@@ -53,10 +60,12 @@ const hh = document.querySelector('input[placeholder="HH"]');
 const mm = document.querySelector('input[placeholder="MM"]');
 const ss = document.querySelector('input[placeholder="SS"]');
 const button = document.querySelector("button");
+const progress = document.querySelector(".elapsed_progress");
 const inputs = Array.from(document.querySelectorAll("input"));
 const values = Object();
 const ins = [hh, mm, ss];
 let intID;
+let paused;
 
 inputs.forEach(input => addEventListener("keyup", () => {
     if (input.value > 59)
