@@ -13,6 +13,7 @@
             height: 100vh;
             margin: 0px 30%;
             padding: 0px auto;
+            gap: 1vh;
         }
 
         input::-webkit-outer-spin-button,
@@ -52,29 +53,38 @@
         }
 
         .container {
-            flex: 1 1 auto;
             display: flex;
             max-height: 20vh;
             width: auto;
         }
 
         .buttons {
-            gap: 3vw;
+            gap: 4vw;
         }
 
         .progress {
+            max-height: 5px;
+            width: 100%;
+            flex-basis: 100%;
+            display: flex;
+        }
+        
+        .elapsed_progress {
+            flex-basis: 50%;
             background-color: black;
         }
+
     </style>
 </head>
 
 <body>
-    <div class="container progress">
-    </div>
     <div class="container">
         <input type="number" max="100" placeholder="HH" maxlength="2" value="00">
         <input type="number" max="60" placeholder="MM" maxlength="2" value="00">
         <input type="number" max="60" placeholder="SS" maxlength="2" value="00">
+    </div>
+    <div class="container progress">
+        <div class="elapsed_progress"></div>
     </div>
     <div class="container buttons">
         <button onclick="toggleTimer()">Start</button>
