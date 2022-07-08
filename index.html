@@ -45,16 +45,27 @@
         button:hover {
             background-color: rgb(148, 148, 148);
         }
+
+        .container {
+            display: flex;
+        }
+
+        .buttons {
+            gap: 1vw;
+        }
     </style>
 </head>
 
 <body>
-    <div style="display: flex;">
+    <div class="container">
         <input type="number" max="100" placeholder="HH" maxlength="2" value="00">
         <input type="number" max="60" placeholder="MM" maxlength="2" value="00">
         <input type="number" max="60" placeholder="SS" maxlength="2" value="00">
     </div>
-    <button onclick="toggleTimer();">Start</button>
+    <div class="container buttons">
+        <button onclick="toggleTimer()">Start</button>
+        <button onclick="resetTimer()">Reset</button>
+    </div>
 </body>
 
 </html>
