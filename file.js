@@ -56,6 +56,12 @@ function toggleTimer() {
     }
 }
 
+function resetTimer() {
+    clearInterval(intID)
+    inputs.forEach(input => input.value = "00");
+    progress.style.flexBasis = "100%";
+}
+
 const hh = document.querySelector('input[placeholder="HH"]');
 const mm = document.querySelector('input[placeholder="MM"]');
 const ss = document.querySelector('input[placeholder="SS"]');
