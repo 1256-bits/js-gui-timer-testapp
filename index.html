@@ -28,9 +28,13 @@
         input {
             border: none;
             text-align: center;
-            font-size: 10vh;
+            font-size: 10vmin;
             flex: 1 1 auto;
             width: 15vw;
+        }
+
+        input:focus {
+            outline: 0px;
         }
 
         button {
@@ -40,6 +44,7 @@
             padding: 1vh 5vw;
             color: white;
             font-size: 5vh;
+            max-height: 10vh;
         }
 
         button:hover {
@@ -47,16 +52,25 @@
         }
 
         .container {
+            flex: 1 1 auto;
             display: flex;
+            max-height: 20vh;
+            width: auto;
         }
 
         .buttons {
-            gap: 1vw;
+            gap: 3vw;
+        }
+
+        .progress {
+            background-color: black;
         }
     </style>
 </head>
 
 <body>
+    <div class="container progress">
+    </div>
     <div class="container">
         <input type="number" max="100" placeholder="HH" maxlength="2" value="00">
         <input type="number" max="60" placeholder="MM" maxlength="2" value="00">
