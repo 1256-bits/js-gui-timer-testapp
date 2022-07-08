@@ -11,6 +11,10 @@ function setTimer(sec, flag = false) {
         const hours = numProcess(Math.floor((val / 60 / 60) % 60));
         const mins = numProcess(Math.floor((val / 60) % 60));
         const secs = numProcess(Math.floor(val % 60));
+        if (paused) {
+            sec = timeBackup;
+            paused = false;
+        }
         progress.style.flexBasis = `${val / sec * 100}%`
         if (val <= 0) {
             console.log(`${hours}:${mins}:${secs}`);
@@ -41,17 +45,19 @@ function updatePage(hours, mins, secs) {
 
 function startTimer(hh, mm, ss) {
     time = parseInt(((+hh.value * 60) + +mm.value) * 60 + +ss.value);
+    if (!paused)
+        timeBackup = time;
     console.log(time);
     setTimer(time);
 }
 
 function toggleTimer() {
-    paused = !paused;
     if (!intID)
         startTimer(hh, mm, ss);
     else {
         clearInterval(intID);
         intID = '';
+        paused = true;
         button.innerText = "Start";
     }
 }
@@ -72,6 +78,7 @@ const values = Object();
 const ins = [hh, mm, ss];
 let intID;
 let paused;
+let timeBackup;
 
 inputs.forEach(input => addEventListener("keyup", () => {
     if (input.value > 59)
