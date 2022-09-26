@@ -12,7 +12,6 @@ function setTimer(sec, flag = false) {
         const mins = numProcess(Math.floor((val / 60) % 60));
         const secs = numProcess(Math.floor(val % 60));
         if (paused) {
-            sec = timeBackup;
             paused = false;
         }
         progress.style.flexBasis = `${val / sec * 100}%`
@@ -44,9 +43,7 @@ function updatePage(hours, mins, secs) {
 }
 
 function startTimer(hh, mm, ss) {
-    time = parseInt(((+hh.value * 60) + +mm.value) * 60 + +ss.value);
-    if (!paused)
-        timeBackup = time;
+    const time = parseInt(((+hh.value * 60) + +mm.value) * 60 + +ss.value);
     console.log(time);
     setTimer(time);
 }
@@ -68,6 +65,7 @@ function resetTimer() {
     progress.style.flexBasis = "100%";
     button.innerText = "Start";
     intID = "";
+    paused = false;
 }
 
 const hh = document.querySelector('input[placeholder="HH"]');
@@ -80,7 +78,6 @@ const values = Object();
 const ins = [hh, mm, ss];
 let intID;
 let paused;
-let timeBackup;
 
 inputs.forEach(input => addEventListener("keyup", () => {
     if (input.value > 59)
@@ -116,3 +113,7 @@ window.addEventListener("keydown", (e) => {
     if (e.keyCode === 13)
         startTimer(hh, mm, ss);
 })
+
+inputs.forEach(input => addEventListener("change", () => {
+    progress.style.flexBasis = "100%";
+}));
