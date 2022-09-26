@@ -66,6 +66,8 @@ function resetTimer() {
     clearInterval(intID)
     inputs.forEach(input => input.value = "00");
     progress.style.flexBasis = "100%";
+    button.innerText = "Start";
+    intID = "";
 }
 
 const hh = document.querySelector('input[placeholder="HH"]');
