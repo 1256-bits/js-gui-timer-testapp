@@ -26,7 +26,7 @@ class timer {
             );
             const displaySecs = this.#formatValues(Math.floor(timeLeft_s % 60));
             progress.style.width = `${(timeLeft_s / this.initialSetTime_s) * 100}%`;
-            updatePage(displayHours, displayMins, displaySecs);
+            this.#updatePage(displayHours, displayMins, displaySecs);
             if (timeLeft_s <= 0) {
                 console.log(`${displayHours}:${displayMins}:${displaySecs}`);
                 this.pauseTimer();
@@ -46,13 +46,13 @@ class timer {
     #formatValues(num) {
         return num >= 10 ? num.toString() : "0" + num.toString();
     }
+    #updatePage(hours, mins, secs) {
+        inputHours.value = hours;
+        inputMinutes.value = mins;
+        inputSeconds.value = secs;
+    }
 }
 /* OLD */
-function updatePage(hours, mins, secs) {
-    inputHours.value = hours;
-    inputMinutes.value = mins;
-    inputSeconds.value = secs;
-}
 
 function startTimer(hh, mm, ss) {
     const time = parseInt((+hh.value * 60 + +mm.value) * 60 + +ss.value);
