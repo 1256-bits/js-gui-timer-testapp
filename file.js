@@ -5,7 +5,6 @@ const button = document.querySelector("button");
 const progress = document.querySelector("#progress");
 const inputs = Array.from(document.querySelectorAll("input"));
 const values = Object();
-const ins = [inputHours, inputMinutes, inputSeconds];
 let intID; //
 let isPaused; //
 
@@ -16,7 +15,7 @@ class timer {
         this.isPaused = false;
         this.intervalId = 0;
     }
-    setTimer() {
+    setTimer() {PermissionStatus
         this.intervalId = setInterval(() => {
             if (this.isPaused) this.isPaused = false;
             const currentTime_s = Math.floor(Date.now() / 1000);
@@ -25,7 +24,7 @@ class timer {
             const displayHours = this.#formatValues(Math.floor(timeLeft_s / 60 / 60));
             const displayMins = this.#formatValues(Math.floor((timeLeft_s / 60) % 60));
             const displaySecs = this.#formatValues(Math.floor(timeLeft_s % 60));
-            progress.style.width = `${(timeLeft_s / this.initialTimestamp_s) * 100}%`;
+            progress.style.width = `${(timeLeft_s / this.initialSetTime_s) * 100}%`;
             updatePage(displayHours, displayMins, displaySecs);
             if (timeLeft_s <= 0) {
                 console.log(`${displayHours}:${displayMins}:${displaySecs}`);
@@ -35,7 +34,7 @@ class timer {
             }
         }, 1000);
     }
-    #formatValues() {
+    #formatValues(num) {
         return num >= 10 ? num.toString() : "0" + num.toString();
     }
 }
