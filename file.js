@@ -11,16 +11,15 @@ let isPaused; //
 class timer {
     constructor(initialSetTime_s) {
         this.initialSetTime_s = initialSetTime_s;
-        this.initialTimestamp_s = Math.trunc(Date.now() / 1000);
+        this.targetTimestamp_s = this.initialSetTime_s + Math.trunc(Date.now() / 1000);
         this.isPaused = false;
         this.intervalId = 0;
     }
-    setTimer() {PermissionStatus
+    setTimer() {
         this.intervalId = setInterval(() => {
-            if (this.isPaused) this.isPaused = false;
+            console.log("hi")
             const currentTime_s = Math.floor(Date.now() / 1000);
-            const timeLeft_s =
-                this.initialTimestamp_s + this.initialSetTime_s - currentTime_s;
+            const timeLeft_s = this.targetTimestamp_s - currentTime_s;
             const displayHours = this.#formatValues(Math.floor(timeLeft_s / 60 / 60));
             const displayMins = this.#formatValues(Math.floor((timeLeft_s / 60) % 60));
             const displaySecs = this.#formatValues(Math.floor(timeLeft_s % 60));
@@ -28,16 +27,25 @@ class timer {
             updatePage(displayHours, displayMins, displaySecs);
             if (timeLeft_s <= 0) {
                 console.log(`${displayHours}:${displayMins}:${displaySecs}`);
-                clearInterval(this.intervalId);
-                delete this.intervalId;
-                button.innerText = "Start";
+                this.pauseTimer();
             }
         }, 1000);
     }
-    #formatValues(num) {
-        return num >= 10 ? num.toString() : "0" + num.toString();
+    pauseTimer() {
+        clearInterval(this.intervalId);
+        button.innerText = "Start";
+        this.isPaused = true;
+        this.timeLeftBuff = this.targetTimestamp_s - Math.floor(Date.now() / 1000);
     }
-}
+    resumeTimer() {
+        this.targetTimestamp_s = this.timeLeftBuff + Math.floor(Date.now() / 1000);
+        this.isPaused = false;
+        this.setTimer();
+    }
+        #formatValues(num) {
+            return num >= 10 ? num.toString() : "0" + num.toString();
+        }
+    }
 /* OLD */
 function updatePage(hours, mins, secs) {
     inputHours.value = hours;
@@ -54,10 +62,6 @@ function startTimer(hh, mm, ss) {
 function toggleTimer() {
     if (!intID) startTimer(inputHours, inputMinutes, inputSeconds);
     else {
-        clearInterval(intID);
-        intID = "";
-        isPaused = true;
-        button.innerText = "Start";
     }
 }
 
