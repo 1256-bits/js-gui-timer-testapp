@@ -3,10 +3,7 @@ const inputMinutes = document.querySelector("#minutes");
 const inputSeconds = document.querySelector("#seconds");
 const button = document.querySelector("button");
 const progress = document.querySelector("#progress");
-const inputs = Array.from(document.querySelectorAll("input"));
-const values = Object();
-let intID; //
-let isPaused; //
+const inputs = document.querySelectorAll("input");
 
 class timer {
     constructor(initialSetTime_s) {
@@ -43,6 +40,9 @@ class timer {
         this.isPaused = false;
         this.setTimer();
     }
+    resetTimer() {
+        clearInterval(this.intervalId);
+    }
     #formatValues(num) {
         return num >= 10 ? num.toString() : "0" + num.toString();
     }
@@ -74,16 +74,17 @@ function resetTimer() {
     intID = "";
     isPaused = false;
 }
-
+/* GOOD */
 inputs.forEach((input) =>
     addEventListener("keyup", () => {
         if (input.value > 59) input.value = 59;
-        if (input.value.length > 2) input.value = input.value.slice(0, 2);
+        if (input.value.length > 2) input.value = input.value.slice(0, 2); //stops you from inputting zeros.
     })
 );
+/* GOOD */
 
 inputs.forEach((input) =>
-    addEventListener("keydown", (evt) => {
+    input.addEventListener("keydown", (evt) => {
         badKeys = [69, 190, 187, 189, 107, 109];
         if (badKeys.includes(evt.which)) evt.preventDefault();
     })
@@ -91,10 +92,8 @@ inputs.forEach((input) =>
 
 inputs.forEach((input) =>
     input.addEventListener("focus", (e) => {
-        if (input.value) {
-            values[input.placeholder] = input.value;
-            input.value = "";
-        }
+        input.dataset.value = input.value;
+        input.value = "";
     })
 );
 
@@ -111,7 +110,7 @@ inputs.forEach((input) =>
 );
 
 window.addEventListener("keydown", (e) => {
-    if (e.keyCode === 13) startTimer(inputHours, inputMinutes, inputSeconds);
+    if (e.code = "Space") startTimer(inputHours, inputMinutes, inputSeconds);
 });
 
 inputs.forEach((input) =>
