@@ -6,34 +6,35 @@ const progress = document.querySelector("#progress");
 const inputs = Array.from(document.querySelectorAll("input"));
 const values = Object();
 const ins = [inputHours, imputMinutes, inputSeconds];
-let intID;
-let isPaused;
+let intID; //
+let isPaused; //
 
-function setTimer(sec) {
-    if (sec <= 0) return;
-    if (!isPaused) progress.style.flexBasis = "100%";
-    button.innerText = "Stop";
-    const targetTimeSeconds = Math.floor(Date.now() / 1000 + sec);
-    intID = setInterval(() => {
-        const currentTimeSeconds = Math.floor(Date.now() / 1000);
-        const timeLeftSeconds = targetTimeSeconds - currentTimeSeconds;
-        const displayHours = formatValues(Math.floor(timeLeftSeconds / 60 / 60));
-        const displayMins = formatValues(Math.floor((timeLeftSeconds / 60) % 60));
-        const displaySecs = formatValues(Math.floor(timeLeftSeconds % 60));
-        if (isPaused) {
-            isPaused = false;
-        }
-        progress.style.flexBasis = `${(timeLeftSeconds / sec) * 100}%`;
-        updatePage(displayHours, displayMins, displaySecs);
-        if (timeLeftSeconds <= 0) {
-            console.log(`${displayHours}:${displayMins}:${displaySecs}`);
-            clearInterval(intID);
-            intID = "";
-            button.innerText = "Start";
-        }
-    }, 1000);
+class timer {
+    constructor(initialSetTime_s) {
+        this.initialSetTime_s = initialSetTime_s;
+        this.initialTimestamp_s = Math.trunc(Date.now() / 1000);
+        this.isPaused = false;
+        this.intervalId = 0;
+    }
+    setTimer() {
+        this.intervalId = setInterval(() => {
+            if (this.isPaused) this.isPaused = false;
+            const currentTime_s = Math.floor(Date.now() / 1000);
+            const timeLeft_s = this.initialTimestamp_s + this.initialSetTime_s - currentTime_s;
+            const displayHours = formatValues(Math.floor(timeLeft_s / 60 / 60));
+            const displayMins = formatValues(Math.floor((timeLeft_s / 60) % 60));
+            const displaySecs = formatValues(Math.floor(timeLeft_s % 60));
+            progress.style.width = `${timeLeft_s / this.initialTimestamp_s * 100}%`;
+            updatePage(displayHours, displayMins, displaySecs);
+            if (timeLeft_s <= 0) {
+                console.log(`${displayHours}:${displayMins}:${displaySecs}`);
+                clearInterval(this.intervalId);
+                button.innerText = "Start";
+            }
+        }, 1000);
+    }
 }
-
+/* OLD */
 function formatValues(num) {
     return num >= 10 ? num.toString() : "0" + num.toString();
 }
