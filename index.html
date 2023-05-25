@@ -8,9 +8,9 @@
 <body>
     <div>
         <div id="container">
-            <input type="number" max="100" placeholder="HH" maxlength="2" value="00" />
-            <input type="number" max="60" placeholder="MM" maxlength="2" value="00" />
-            <input type="number" max="60" placeholder="SS" maxlength="2" value="00" />
+            <input id="hours" type="number" max="100" placeholder="HH" maxlength="2" value="00" />
+            <input id="minutes" type="number" max="60" placeholder="MM" maxlength="2" value="00" />
+            <input id="seconds" type="number" max="60" placeholder="SS" maxlength="2" value="00" />
             <div id="progress"></div>
             <button onclick="toggleTimer()">Start</button>
             <button onclick="resetTimer()">Reset</button>
