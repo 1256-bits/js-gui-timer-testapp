@@ -20,25 +20,26 @@ class timer {
         this.intervalId = setInterval(() => {
             if (this.isPaused) this.isPaused = false;
             const currentTime_s = Math.floor(Date.now() / 1000);
-            const timeLeft_s = this.initialTimestamp_s + this.initialSetTime_s - currentTime_s;
-            const displayHours = formatValues(Math.floor(timeLeft_s / 60 / 60));
-            const displayMins = formatValues(Math.floor((timeLeft_s / 60) % 60));
-            const displaySecs = formatValues(Math.floor(timeLeft_s % 60));
-            progress.style.width = `${timeLeft_s / this.initialTimestamp_s * 100}%`;
+            const timeLeft_s =
+                this.initialTimestamp_s + this.initialSetTime_s - currentTime_s;
+            const displayHours = this.#formatValues(Math.floor(timeLeft_s / 60 / 60));
+            const displayMins = this.#formatValues(Math.floor((timeLeft_s / 60) % 60));
+            const displaySecs = this.#formatValues(Math.floor(timeLeft_s % 60));
+            progress.style.width = `${(timeLeft_s / this.initialTimestamp_s) * 100}%`;
             updatePage(displayHours, displayMins, displaySecs);
             if (timeLeft_s <= 0) {
                 console.log(`${displayHours}:${displayMins}:${displaySecs}`);
                 clearInterval(this.intervalId);
+                delete this.intervalId;
                 button.innerText = "Start";
             }
         }, 1000);
     }
+    #formatValues() {
+        return num >= 10 ? num.toString() : "0" + num.toString();
+    }
 }
 /* OLD */
-function formatValues(num) {
-    return num >= 10 ? num.toString() : "0" + num.toString();
-}
-
 function updatePage(hours, mins, secs) {
     inputHours.value = hours;
     imputMinutes.value = mins;
