@@ -1,11 +1,11 @@
 const inputHours = document.querySelector('input[placeholder="HH"]');
-const imputMinutes = document.querySelector('input[placeholder="MM"]');
+const inputMinutes = document.querySelector('input[placeholder="MM"]');
 const inputSeconds = document.querySelector('input[placeholder="SS"]');
 const button = document.querySelector("button");
 const progress = document.querySelector("#progress");
 const inputs = Array.from(document.querySelectorAll("input"));
 const values = Object();
-const ins = [inputHours, imputMinutes, inputSeconds];
+const ins = [inputHours, inputMinutes, inputSeconds];
 let intID; //
 let isPaused; //
 
@@ -42,7 +42,7 @@ class timer {
 /* OLD */
 function updatePage(hours, mins, secs) {
     inputHours.value = hours;
-    imputMinutes.value = mins;
+    inputMinutes.value = mins;
     inputSeconds.value = secs;
 }
 
@@ -53,7 +53,7 @@ function startTimer(hh, mm, ss) {
 }
 
 function toggleTimer() {
-    if (!intID) startTimer(inputHours, imputMinutes, inputSeconds);
+    if (!intID) startTimer(inputHours, inputMinutes, inputSeconds);
     else {
         clearInterval(intID);
         intID = "";
@@ -107,7 +107,7 @@ inputs.forEach((input) =>
 );
 
 window.addEventListener("keydown", (e) => {
-    if (e.keyCode === 13) startTimer(inputHours, imputMinutes, inputSeconds);
+    if (e.keyCode === 13) startTimer(inputHours, inputMinutes, inputSeconds);
 });
 
 inputs.forEach((input) =>
