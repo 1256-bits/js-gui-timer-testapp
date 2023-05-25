@@ -1,6 +1,6 @@
-const inputHours = document.querySelector('#hours');
-const inputMinutes = document.querySelector('#minutes');
-const inputSeconds = document.querySelector('#seconds');
+const inputHours = document.querySelector("#hours");
+const inputMinutes = document.querySelector("#minutes");
+const inputSeconds = document.querySelector("#seconds");
 const button = document.querySelector("button");
 const progress = document.querySelector("#progress");
 const inputs = Array.from(document.querySelectorAll("input"));
@@ -11,17 +11,19 @@ let isPaused; //
 class timer {
     constructor(initialSetTime_s) {
         this.initialSetTime_s = initialSetTime_s;
-        this.targetTimestamp_s = this.initialSetTime_s + Math.trunc(Date.now() / 1000);
+        this.targetTimestamp_s =
+            this.initialSetTime_s + Math.trunc(Date.now() / 1000);
         this.isPaused = false;
         this.intervalId = 0;
     }
     setTimer() {
         this.intervalId = setInterval(() => {
-            console.log("hi")
             const currentTime_s = Math.floor(Date.now() / 1000);
             const timeLeft_s = this.targetTimestamp_s - currentTime_s;
             const displayHours = this.#formatValues(Math.floor(timeLeft_s / 60 / 60));
-            const displayMins = this.#formatValues(Math.floor((timeLeft_s / 60) % 60));
+            const displayMins = this.#formatValues(
+                Math.floor((timeLeft_s / 60) % 60)
+            );
             const displaySecs = this.#formatValues(Math.floor(timeLeft_s % 60));
             progress.style.width = `${(timeLeft_s / this.initialSetTime_s) * 100}%`;
             updatePage(displayHours, displayMins, displaySecs);
@@ -33,7 +35,6 @@ class timer {
     }
     pauseTimer() {
         clearInterval(this.intervalId);
-        button.innerText = "Start";
         this.isPaused = true;
         this.timeLeftBuff = this.targetTimestamp_s - Math.floor(Date.now() / 1000);
     }
@@ -42,10 +43,10 @@ class timer {
         this.isPaused = false;
         this.setTimer();
     }
-        #formatValues(num) {
-            return num >= 10 ? num.toString() : "0" + num.toString();
-        }
+    #formatValues(num) {
+        return num >= 10 ? num.toString() : "0" + num.toString();
     }
+}
 /* OLD */
 function updatePage(hours, mins, secs) {
     inputHours.value = hours;
