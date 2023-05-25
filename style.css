@@ -55,3 +55,15 @@ button:hover {
 button:active {
   background-color: rgb(120, 120, 120);
 }
+
+@media (max-width: 599px) {
+  #container {
+    width: 80%;
+  }
+  input {
+    font-size: 4rem;
+  }
+  button {
+    font-size: 2rem;
+  }
+}
