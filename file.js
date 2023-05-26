@@ -46,7 +46,6 @@ class uiElements {
         this.inputHours = document.querySelector("#hours");
         this.inputMinutes = document.querySelector("#minutes");
         this.inputSeconds = document.querySelector("#seconds");
-        this.button = document.querySelector("button");
         this.progress = document.querySelector("#progress");
         this.inputs = document.querySelectorAll("input");
     }
@@ -62,7 +61,7 @@ class uiElements {
         this.progress.style.width = `${(timeLeft_s / timeTotal_s) * 100}%`;
     }
     static init() {
-        this.inputs.forEach((input) => {
+        this.inputs.forEach(input => {
             input.addEventListener("keyup", (e) => {
                 input = e.target;
                 if (input.value > 59) input.value = 59;
@@ -84,20 +83,3 @@ class uiElements {
         });
     }
 }
-/* OLD */
-
-function startTimer(hh, mm, ss) {
-    const time = parseInt((+hh.value * 60 + +mm.value) * 60 + +ss.value);
-    console.log(time);
-    setTimer(time);
-}
-
-function toggleTimer() {
-    if (!intID) startTimer(inputHours, inputMinutes, inputSeconds);
-    else {
-    }
-}
-
-window.addEventListener("keydown", (e) => {
-    if ((e.code = "Space")) startTimer(inputHours, inputMinutes, inputSeconds);
-});
