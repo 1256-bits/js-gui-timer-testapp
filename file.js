@@ -72,6 +72,14 @@ class uiElements {
                 e.target.dataset.value = e.target.value;
                 e.target.value = "";
             });
+            input.addEventListener("blur", (e) => {
+                input = e.target;
+                if (input.value) {
+                    input.value = this.formatValues(input.value);
+                    return;
+                }
+                input.value = input.dataset.value;
+            });
         });
     }
 }
@@ -88,18 +96,6 @@ function toggleTimer() {
     else {
     }
 }
-
-inputs.forEach((input) =>
-    input.addEventListener("blur", (e) => {
-        if (input.value) {
-            input.value = formatValues(+input.value);
-        }
-        if (values[input.placeholder] && !input.value) {
-            input.value = values[input.placeholder];
-            values[input.placeholder] = "";
-        }
-    })
-);
 
 window.addEventListener("keydown", (e) => {
     if ((e.code = "Space")) startTimer(inputHours, inputMinutes, inputSeconds);
