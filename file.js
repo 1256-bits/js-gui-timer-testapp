@@ -53,18 +53,20 @@ class uiElements {
         return num >= 10 ? num.toString() : "0" + num.toString();
     }
     static updatePage(hours, mins, secs) {
-        inputHours.value = hours;
-        inputMinutes.value = mins;
-        inputSeconds.value = secs;
+        this.inputHours.value = hours;
+        this.inputMinutes.value = mins;
+        this.inputSeconds.value = secs;
     }
     static updateBar(timeLeft_s, timeTotal_s) {
         this.progress.style.width = `${(timeLeft_s / timeTotal_s) * 100}%`;
     }
     static init() {
         this.inputs.forEach((input) => {
-            input.addEventListener("keyup", () => {
+            input.addEventListener("keyup", (e) => {
+                input = e.target;
                 if (input.value > 59) input.value = 59;
                 if (input.value.length > 2) input.value = input.value.slice(0, 2); //stops you from inputting zeros.
+                if (input.value < 0) input.value = "00";
             });
             input.addEventListener("focus", (e) => {
                 e.target.dataset.value = e.target.value;
@@ -87,32 +89,14 @@ function toggleTimer() {
     }
 }
 
-function resetTimer() {
-    clearInterval(intID);
-    inputs.forEach((input) => (input.value = "00"));
-    progress.style.flexBasis = "100%";
-    button.innerText = "Start";
-    intID = "";
-    isPaused = false;
-}
-/* GOOD */
-/* GOOD */
-
-inputs.forEach((input) =>
-    input.addEventListener("keydown", (evt) => {
-        badKeys = [69, 190, 187, 189, 107, 109];
-        if (badKeys.includes(evt.which)) evt.preventDefault();
-    })
-);
-
 inputs.forEach((input) =>
     input.addEventListener("blur", (e) => {
+        if (input.value) {
+            input.value = formatValues(+input.value);
+        }
         if (values[input.placeholder] && !input.value) {
             input.value = values[input.placeholder];
             values[input.placeholder] = "";
-        }
-        if (input.value) {
-            input.value = formatValues(+input.value);
         }
     })
 );
@@ -120,9 +104,3 @@ inputs.forEach((input) =>
 window.addEventListener("keydown", (e) => {
     if ((e.code = "Space")) startTimer(inputHours, inputMinutes, inputSeconds);
 });
-
-inputs.forEach((input) =>
-    addEventListener("change", () => {
-        progress.style.flexBasis = "100%";
-    })
-);
