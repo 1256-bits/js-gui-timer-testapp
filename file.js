@@ -62,7 +62,7 @@ class UIElements {
         this.progress.style.width = `${(timeLeft_s / timeTotal_s) * 100}%`;
     }
     static resetUi() {
-        this.inputs.forEach(input => input.value = "00");
+        this.inputs.forEach((input) => (input.value = "00"));
         this.progress.style.width = "100%";
     }
     static init() {
@@ -94,6 +94,6 @@ const startButton = document.querySelector("#start");
 const resetButton = document.querySelector("#reset");
 UIElements.init();
 resetButton.addEventListener("click", () => {
-    if(timer) timer.resetTimer;
+    if (timer) timer.resetTimer();
     UIElements.resetUi();
 });
