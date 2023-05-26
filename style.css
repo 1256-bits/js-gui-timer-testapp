@@ -58,7 +58,8 @@ button:active {
 
 @media (max-width: 599px) {
   #container {
-    width: 80%;
+    width: max(400px, 80%);
+    background-color: hotpink;
   }
   input {
     font-size: 4rem;
