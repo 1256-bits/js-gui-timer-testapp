@@ -1,4 +1,4 @@
-class timer {
+class Timer {
     constructor(initialSetTime_s) {
         this.initialSetTime_s = initialSetTime_s;
         this.targetTimestamp_s =
@@ -10,18 +10,19 @@ class timer {
         this.intervalId = setInterval(() => {
             const currentTime_s = Math.floor(Date.now() / 1000);
             const timeLeft_s = this.targetTimestamp_s - currentTime_s;
-            const displayHours = uiElements.formatValues(
+            const displayHours = UIElements.formatValues(
                 Math.floor(timeLeft_s / 60 / 60)
             );
-            const displayMins = uiElements.formatValues(
+            const displayMins = UIElements.formatValues(
                 Math.floor((timeLeft_s / 60) % 60)
             );
-            const displaySecs = uiElements.formatValues(Math.floor(timeLeft_s % 60));
-            uiElements.updateBar(timeLeft_s, this.initialSetTime_s);
-            uiElements.updatePage(displayHours, displayMins, displaySecs);
-            if (timeLeft_s <= 0) {
-                console.log(`${displayHours}:${displayMins}:${displaySecs}`);
-                this.pauseTimer();
+            const displaySecs = UIElements.formatValues(Math.floor(timeLeft_s % 60));
+            UIElements.updateBar(timeLeft_s, this.initialSetTime_s);
+            UIElements.updatePage(displayHours, displayMins, displaySecs);
+            console.log(timeLeft_s);
+            if (timeLeft_s === 0) {
+                this.resetTimer();
+                this.isFinished = true;
             }
         }, 1000);
     }
@@ -41,7 +42,7 @@ class timer {
     }
 }
 
-class uiElements {
+class UIElements {
     static {
         this.inputHours = document.querySelector("#hours");
         this.inputMinutes = document.querySelector("#minutes");
@@ -60,8 +61,12 @@ class uiElements {
     static updateBar(timeLeft_s, timeTotal_s) {
         this.progress.style.width = `${(timeLeft_s / timeTotal_s) * 100}%`;
     }
+    static resetUi() {
+        this.inputs.forEach(input => input.value = "00");
+        this.progress.style.width = "100%";
+    }
     static init() {
-        this.inputs.forEach(input => {
+        this.inputs.forEach((input) => {
             input.addEventListener("keyup", (e) => {
                 input = e.target;
                 if (input.value > 59) input.value = 59;
@@ -83,3 +88,12 @@ class uiElements {
         });
     }
 }
+
+let timer;
+const startButton = document.querySelector("#start");
+const resetButton = document.querySelector("#reset");
+UIElements.init();
+resetButton.addEventListener("click", () => {
+    if(timer) timer.resetTimer;
+    UIElements.resetUi();
+});
