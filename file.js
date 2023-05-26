@@ -105,15 +105,21 @@ class UIElements {
             if (timer.timer) timer.timer.resetTimer();
             UIElements.resetUi();
         });
-        this.startButton.addEventListener("click", () => {
-            if (!timer || timer.timer.isFinished) {
-                timer = new UIElements();
-                this.startButton.textContent = "Stop";
-                return;
-            }
-            timer.timer.toggleTimer();
-            this.startButton.textContent = timer.timer.isPaused ? "Start" : "Stop";
+        this.startButton.addEventListener("click", this.#buttonToggle);
+        document.addEventListener("keydown", (e) => {
+            if (e.code === "Space") this.#buttonToggle();
         });
+    }
+    static #buttonToggle() {
+        if (!timer || timer.timer.isFinished) {
+            timer = new UIElements();
+            UIElements.startButton.textContent = "Stop";
+            return;
+        }
+        timer.timer.toggleTimer();
+        UIElements.startButton.textContent = timer.timer.isPaused
+            ? "Start"
+            : "Stop";
     }
 }
 
