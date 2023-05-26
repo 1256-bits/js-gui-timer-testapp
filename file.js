@@ -1,10 +1,3 @@
-const inputHours = document.querySelector("#hours");
-const inputMinutes = document.querySelector("#minutes");
-const inputSeconds = document.querySelector("#seconds");
-const button = document.querySelector("button");
-const progress = document.querySelector("#progress");
-const inputs = document.querySelectorAll("input");
-
 class timer {
     constructor(initialSetTime_s) {
         this.initialSetTime_s = initialSetTime_s;
@@ -48,6 +41,14 @@ class timer {
 }
 
 class uiElements {
+    static {
+        this.inputHours = document.querySelector("#hours");
+        this.inputMinutes = document.querySelector("#minutes");
+        this.inputSeconds = document.querySelector("#seconds");
+        this.button = document.querySelector("button");
+        this.progress = document.querySelector("#progress");
+        this.inputs = document.querySelectorAll("input");
+    }
     static formatValues(num) {
         return num >= 10 ? num.toString() : "0" + num.toString();
     }
@@ -58,6 +59,18 @@ class uiElements {
     }
     static updateBar(timeLeft_s, timeTotal_s) {
         this.progress.style.width = `${(timeLeft_s / timeTotal_s) * 100}%`;
+    }
+    static init() {
+        this.inputs.forEach((input) => {
+            input.addEventListener("keyup", () => {
+                if (input.value > 59) input.value = 59;
+                if (input.value.length > 2) input.value = input.value.slice(0, 2); //stops you from inputting zeros.
+            });
+            input.addEventListener("focus", (e) => {
+                e.target.dataset.value = e.target.value;
+                e.target.value = "";
+            });
+        });
     }
 }
 /* OLD */
@@ -83,18 +96,6 @@ function resetTimer() {
     isPaused = false;
 }
 /* GOOD */
-inputs.forEach((input) =>
-    addEventListener("keyup", () => {
-        if (input.value > 59) input.value = 59;
-        if (input.value.length > 2) input.value = input.value.slice(0, 2); //stops you from inputting zeros.
-    })
-);
-inputs.forEach((input) =>
-    input.addEventListener("focus", (e) => {
-        input.dataset.value = input.value;
-        input.value = "";
-    })
-);
 /* GOOD */
 
 inputs.forEach((input) =>
