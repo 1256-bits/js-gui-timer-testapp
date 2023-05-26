@@ -112,6 +112,7 @@ class UIElements {
                 return;
             }
             timer.timer.toggleTimer();
+            this.startButton.textContent = timer.timer.isPaused ? "Start" : "Stop";
         });
     }
 }
