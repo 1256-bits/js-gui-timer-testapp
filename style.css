@@ -35,7 +35,6 @@ input::-webkit-inner-spin-button {
   height: 10px;
   background: black;
   border-radius: 1em;
-  transition: width 1s linear;
   width: 100%;
 }
 
