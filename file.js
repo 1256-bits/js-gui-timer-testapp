@@ -5,6 +5,7 @@ class Timer {
             this.initialSetTime_s + Math.trunc(Date.now() / 1000);
         this.isPaused = false;
         this.intervalId = 0;
+        this.isFinished = false;
     }
     setTimer() {
         this.intervalId = setInterval(() => {
@@ -23,6 +24,7 @@ class Timer {
             if (timeLeft_s === 0) {
                 this.resetTimer();
                 this.isFinished = true;
+                setTimeout(() => UIElements.resetUi(), 1000);
             }
         }, 1000);
     }
@@ -32,6 +34,7 @@ class Timer {
             this.targetTimestamp_s =
                 this.timeLeftBuff + Math.floor(Date.now() / 1000);
             this.setTimer();
+            return;
         }
         clearInterval(this.intervalId);
         this.isPaused = true;
@@ -45,12 +48,13 @@ class Timer {
 class UIElements {
     constructor() {
         this.timer = new Timer(this.#timeToSeconds());
+        this.timer.setTimer();
     }
     #timeToSeconds() {
-        const hours = UIElements.inputHours.value;
-        const minutes = UIElements.inputMinutes.value;
-        const seconds = UIElements.inputSeconds.value;
-        return (hours * 60 + minutes) * 60 + seconds;
+        const hours = parseInt(UIElements.inputHours.value);
+        const minutes = parseInt(UIElements.inputMinutes.value);
+        const seconds = parseInt(UIElements.inputSeconds.value);
+        return parseInt((hours * 60 + minutes) * 60 + seconds);
     }
     static {
         this.inputHours = document.querySelector("#hours");
@@ -59,6 +63,7 @@ class UIElements {
         this.progress = document.querySelector("#progress");
         this.inputs = document.querySelectorAll("input");
         this.resetButton = document.querySelector("#reset");
+        this.startButton = document.querySelector("#start");
     }
     static formatValues(num) {
         return num >= 10 ? num.toString() : "0" + num.toString();
@@ -96,12 +101,20 @@ class UIElements {
                 input.value = input.dataset.value;
             });
         });
-        resetButton.addEventListener("click", () => {
-            if (this.timer) this.timer.resetTimer();
+        this.resetButton.addEventListener("click", () => {
+            if (timer.timer) timer.timer.resetTimer();
             UIElements.resetUi();
+        });
+        this.startButton.addEventListener("click", () => {
+            if (!timer || timer.timer.isFinished) {
+                timer = new UIElements();
+                this.startButton.textContent = "Stop";
+                return;
+            }
+            timer.timer.toggleTimer();
         });
     }
 }
 
-const startButton = document.querySelector("#start");
+let timer;
 UIElements.init();
