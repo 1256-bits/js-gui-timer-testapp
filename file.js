@@ -25,15 +25,16 @@ class timer {
             }
         }, 1000);
     }
-    pauseTimer() {
+    toggleTimer() {
+        if (this.isPaused) {
+            this.isPaused = false;
+            this.targetTimestamp_s =
+                this.timeLeftBuff + Math.floor(Date.now() / 1000);
+            this.setTimer();
+        }
         clearInterval(this.intervalId);
         this.isPaused = true;
         this.timeLeftBuff = this.targetTimestamp_s - Math.floor(Date.now() / 1000);
-    }
-    resumeTimer() {
-        this.targetTimestamp_s = this.timeLeftBuff + Math.floor(Date.now() / 1000);
-        this.isPaused = false;
-        this.setTimer();
     }
     resetTimer() {
         clearInterval(this.intervalId);
