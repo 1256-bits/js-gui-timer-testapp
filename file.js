@@ -43,12 +43,22 @@ class Timer {
 }
 
 class UIElements {
+    constructor() {
+        this.timer = new Timer(this.#timeToSeconds());
+    }
+    #timeToSeconds() {
+        const hours = UIElements.inputHours.value;
+        const minutes = UIElements.inputMinutes.value;
+        const seconds = UIElements.inputSeconds.value;
+        return (hours * 60 + minutes) * 60 + seconds;
+    }
     static {
         this.inputHours = document.querySelector("#hours");
         this.inputMinutes = document.querySelector("#minutes");
         this.inputSeconds = document.querySelector("#seconds");
         this.progress = document.querySelector("#progress");
         this.inputs = document.querySelectorAll("input");
+        this.resetButton = document.querySelector("#reset");
     }
     static formatValues(num) {
         return num >= 10 ? num.toString() : "0" + num.toString();
@@ -86,14 +96,12 @@ class UIElements {
                 input.value = input.dataset.value;
             });
         });
+        resetButton.addEventListener("click", () => {
+            if (this.timer) this.timer.resetTimer();
+            UIElements.resetUi();
+        });
     }
 }
 
-let timer;
 const startButton = document.querySelector("#start");
-const resetButton = document.querySelector("#reset");
 UIElements.init();
-resetButton.addEventListener("click", () => {
-    if (timer) timer.resetTimer();
-    UIElements.resetUi();
-});
