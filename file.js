@@ -102,7 +102,7 @@ class UIElements {
             });
         });
         this.resetButton.addEventListener("click", () => {
-            if (timer.timer) timer.timer.resetTimer();
+            if (timerUi.timer) timerUi.timer.resetTimer();
             UIElements.resetUi();
         });
         this.startButton.addEventListener("click", this.#buttonToggle);
@@ -111,17 +111,17 @@ class UIElements {
         });
     }
     static #buttonToggle() {
-        if (!timer || timer.timer.isFinished) {
-            timer = new UIElements();
+        if (!timerUi || timerUi.timer.isFinished) {
+            timerUi = new UIElements();
             UIElements.startButton.textContent = "Stop";
             return;
         }
-        timer.timer.toggleTimer();
-        UIElements.startButton.textContent = timer.timer.isPaused
+        timerUi.timer.toggleTimer();
+        UIElements.startButton.textContent = timerUi.timer.isPaused
             ? "Start"
             : "Stop";
     }
 }
 
-let timer;
+let timerUi;
 UIElements.init();
