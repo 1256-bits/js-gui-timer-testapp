@@ -17,13 +17,15 @@ class timer {
         this.intervalId = setInterval(() => {
             const currentTime_s = Math.floor(Date.now() / 1000);
             const timeLeft_s = this.targetTimestamp_s - currentTime_s;
-            const displayHours = this.#formatValues(Math.floor(timeLeft_s / 60 / 60));
-            const displayMins = this.#formatValues(
+            const displayHours = uiElements.formatValues(
+                Math.floor(timeLeft_s / 60 / 60)
+            );
+            const displayMins = uiElements.formatValues(
                 Math.floor((timeLeft_s / 60) % 60)
             );
-            const displaySecs = this.#formatValues(Math.floor(timeLeft_s % 60));
-            progress.style.width = `${(timeLeft_s / this.initialSetTime_s) * 100}%`;
-            this.#updatePage(displayHours, displayMins, displaySecs);
+            const displaySecs = uiElements.formatValues(Math.floor(timeLeft_s % 60));
+            uiElements.updateBar(timeLeft_s, this.initialSetTime_s);
+            uiElements.updatePage(displayHours, displayMins, displaySecs);
             if (timeLeft_s <= 0) {
                 console.log(`${displayHours}:${displayMins}:${displaySecs}`);
                 this.pauseTimer();
@@ -43,13 +45,19 @@ class timer {
     resetTimer() {
         clearInterval(this.intervalId);
     }
-    #formatValues(num) {
+}
+
+class uiElements {
+    static formatValues(num) {
         return num >= 10 ? num.toString() : "0" + num.toString();
     }
-    #updatePage(hours, mins, secs) {
+    static updatePage(hours, mins, secs) {
         inputHours.value = hours;
         inputMinutes.value = mins;
         inputSeconds.value = secs;
+    }
+    static updateBar(timeLeft_s, timeTotal_s) {
+        this.progress.style.width = `${(timeLeft_s / timeTotal_s) * 100}%`;
     }
 }
 /* OLD */
@@ -81,19 +89,18 @@ inputs.forEach((input) =>
         if (input.value.length > 2) input.value = input.value.slice(0, 2); //stops you from inputting zeros.
     })
 );
+inputs.forEach((input) =>
+    input.addEventListener("focus", (e) => {
+        input.dataset.value = input.value;
+        input.value = "";
+    })
+);
 /* GOOD */
 
 inputs.forEach((input) =>
     input.addEventListener("keydown", (evt) => {
         badKeys = [69, 190, 187, 189, 107, 109];
         if (badKeys.includes(evt.which)) evt.preventDefault();
-    })
-);
-
-inputs.forEach((input) =>
-    input.addEventListener("focus", (e) => {
-        input.dataset.value = input.value;
-        input.value = "";
     })
 );
 
@@ -110,7 +117,7 @@ inputs.forEach((input) =>
 );
 
 window.addEventListener("keydown", (e) => {
-    if (e.code = "Space") startTimer(inputHours, inputMinutes, inputSeconds);
+    if ((e.code = "Space")) startTimer(inputHours, inputMinutes, inputSeconds);
 });
 
 inputs.forEach((input) =>
