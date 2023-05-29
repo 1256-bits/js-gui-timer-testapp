@@ -42,6 +42,7 @@ class Timer {
     }
     resetTimer() {
         clearInterval(this.intervalId);
+        this.isFinished = true;
     }
 }
 
